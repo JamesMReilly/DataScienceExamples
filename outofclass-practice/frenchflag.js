@@ -1,3 +1,6 @@
+//a combo of Dr. Guha's "make the italian flag" comment
+//and a Dashing D3 walkthrough on making rectangles
+
 var bluestripe = { "x_axis": 10, "y_axis": 10, "height": 90, "width": 40, "color": "blue" }
 var whitestripe = { "x_axis": 50, "y_axis": 10, "height": 90, "width": 40, "color": "white" }
 var redstripe = { "x_axis": 90, "y_axis": 10, "height": 90, "width": 40, "color": "red" }
