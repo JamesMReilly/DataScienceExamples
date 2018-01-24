@@ -1,0 +1,56 @@
+
+The DOM (Document Object Model) is the standard that defines a standard for how to access documents
+https://www.w3schools.com/js/js_htmldom.asp
+
+D3.js examples are available for viewing at https://github.com/d3/d3/wiki/Gallery with source viewable. The important things to note is that a database connection is not required to make dynamic visuals with D3.js
+
+If you prefer using an IDE over text editors, there are options such as Atom or Visual Studio Code
+
+Moving onto developing with javascript, the developer tools (For Chrome on Windows accessible via Ctrl + Shift + J) are very important
+
+model visualizations (not data visualization) is the topic of this course.
+
+there is an example (index.html) to be downloaded from the class github repo
+
+Describing the contents of the chrome developer tools...
+    elements is the html file we opened
+    console is the debugging window and commandline input available to us developers
+
+The D3.js code may be confusing... but there is a open source API available at https://github.com/d3/d3/blob/master/API.md
+    you should not be expected to be great at this from the beginning, always have the API open in another tab while learning
+
+We can always call the d3.<whatever d3 function> at all times (as long as we imported D3.js correctly)
+    the particular call in this example (y = d3.max(data, function(d,i)...) is written in a callback format (recursion type B)
+
+writing your functions in 1 line in this sort of format is a building block to writing high quality javascript programs
+
+There are 2 things that are very critical about D3
+  1) scale (which we will begin our deep dive on wednesday)
+        scale is the size relative to the page and other items. getting the scale right is 50% of the battle
+
+  2) axis
+        in regards to the dimensions, the pixels size
+
+In lead up to wednesday, read up and rehearse on using scales. We will go over specific exercises (such as create the flag of italy in code)
+
+in D3 we can programatically generate SVG (scalable vector graphics) DOM + SVG is the core of data driven documents
+    a good resource for SVG is again the W3 schools page on SVG https://www.w3schools.com/graphics/svg_intro.asp
+
+A good reading for graphics is "Grammar of Graphics"
+    "How do we break the graphic down into its component parts?"
+    for example a graph has axis, a scale/legend, a grid, labels, datapoints, potentially others
+    
+    D3 is an implementation of a R library for javascript that follows grammar of graphics
+
+This is a brief introduction to the technical components of the development we will be developing
+    DOM, SVG, D3.js, browser developer tools, potential IDE's
+
+The project (with random groups of 3) will have 4 deliverables
+    1) think about a data set that might be useful, present the topic, what types of things will be visualized and the plan
+    2) design what the project will look like and submit a work in progress
+    3) once significant progress has made, do a demo during a second presentation
+    4) final submission: what have you done, what have you found out from the data
+
+Highly encouraged to read up on scales, blogs, posts, code, etc. No need to be an expert by wednesday but looking will help
+
+Flowingdata.com is a website that has tons of d3.js projects for potential inspiration
