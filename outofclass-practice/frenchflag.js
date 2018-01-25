@@ -33,3 +33,25 @@ var rectAttr = rectangles
   .attr("height", function (d) { return d.height; })
   .attr("width", function (d) { return d.width; })
   .attr("fill", function (d) { return d.color; })
+
+function toggleNationality() {
+  var color = d3.select("rect").style("fill")
+  if (color == "blue") {
+    makeGreen();
+  }
+  else makeBlue();
+}
+
+function makeGreen() {
+  d3.select("rect")
+    .style("fill", "green");
+
+  console.log("i tried to make it green");
+}
+
+function makeBlue() {
+  d3.select("rect")
+    .style("fill", "blue");
+
+  console.log("this time i tried blue")
+}
