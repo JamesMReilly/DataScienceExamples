@@ -2,6 +2,9 @@
 
 <head>
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
   <style>
     .arc text {
       font: 2.0em sans-serif;
@@ -25,10 +28,11 @@
 </head>
 
 <body>
-
+  <h3>Pie chart comparing total yards during Super Bowl 51 by each team</h3>
   <svg height="600" width="900"> </svg>
 
   <script id="code">
+    //using Mike Bostock's tutorial on pie charts as a reference https://bl.ocks.org/mbostock/3887235
     var superbowl = [{ "Team": "NE", "Plays": 3, "Yards": 9, "Result": "punt" }, { "Team": "ATL", "Plays": 4, "Yards": 32, "Result": "punt" }, { "Team": "NE", "Plays": 9, "Yards": 41, "Result": "punt" }, { "Team": "ATL", "Plays": 5, "Yards": 24, "Result": "punt" }, { "Team": "NE", "Plays": 5, "Yards": 53, "Result": "fumble" }, { "Team": "ATL", "Plays": 5, "Yards": 71, "Result": "td" }, { "Team": "NE", "Plays": 3, "Yards": 8, "Result": "punt" }, { "Team": "ATL", "Plays": 5, "Yards": 62, "Result": "td" }, { "Team": "NE", "Plays": 12, "Yards": 52, "Result": "int" }, { "Team": "NE", "Plays": 11, "Yards": 52, "Result": "fg" }, { "Team": "ATL", "Plays": 3, "Yards": 4, "Result": "punt" }, { "Team": "NE", "Plays": 3, "Yards": -2, "Result": "punt" }, { "Team": "ATL", "Plays": 8, "Yards": 85, "Result": "td" }, { "Team": "NE", "Plays": 13, "Yards": 75, "Result": "td" }, { "Team": "ATL", "Plays": 3, "Yards": -15, "Result": "punt" }, { "Team": "NE", "Plays": 12, "Yards": 72, "Result": "fg" }, { "Team": "ATL", "Plays": 3, "Yards": -2, "Result": "fumble" }, { "Team": "NE", "Plays": 5, "Yards": 25, "Result": "td" }, { "Team": "ATL", "Plays": 6, "Yards": 45, "Result": "punt" }, { "Team": "NE", "Plays": 10, "Yards": 91, "Result": "td" }, { "Team": "ATL", "Plays": 4, "Yards": 16, "Result": "punt" }, { "Team": "NE", "Plays": 1, "Yards": 13, "Result": "end" }, { "Team": "NE", "Plays": 8, "Yards": 75, "Result": "td" }];
 
     var NEYards = 0,
@@ -77,11 +81,16 @@
       .attr("dy", "0.35em")
       .text(function (d) { return d.data.Team; });
 
-
-    console.log(NEYards);
-    console.log(ATLYards);
   </script>
 
+
+  <pre><code id="display"></code></pre>
+
+
+  <script>
+    document.getElementById("display").innerText = document.getElementById("code").innerText;
+    hljs.initHighlightingOnLoad();
+  </script>
 
 </body>
 
