@@ -1,0 +1,108 @@
+<html>
+
+<head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Alegreya Sans', Calibri, sans-serif;
+    }
+
+    svg {
+      border: solid #ccc 1px;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <svg height="600" width="900"> </svg>
+
+  <script id="code">
+    var svg = d3.select("svg");
+
+    var width = svg.attr("width");
+    var height = svg.attr("height");
+
+    // Define variables outside the scope of the callback function.
+    var countryData;
+    var rawData, nestedData;
+    // This function will be applied to all rows. Select three columns, change names, and convert strings to numbers.
+    function parseLine(line) {
+      return {
+        Country: line["Country Name"],
+        Variable: line["Series Name"],
+        value: Number(line["2016 [YR2016]"])
+      };
+    }
+
+    d3.csv("/data/CountryProfile.csv", parseLine, function (error, data) {
+      rawData = data;
+
+      nestedData = d3.nest()
+        .key(function (d) { return d.Country; })
+        .entries(data);
+
+      countryData = nestedData.map(function (country) {
+        var result = { Country: country.key };
+        country.values.forEach(function (d) {
+          if (d.Variable == "GDP (current US$)") { result.GDP = d.value; }
+          else if (d.Variable == "Tax revenue (% of GDP)") { result.Tax = d.value; }
+          else if (d.Variable == "Income share held by lowest 20%") { result.LowerIncome = d.value; }
+        });
+
+        return result;
+      });
+
+      countryData = countryData.filter(function (d) { return d.LowerIncome && d.GDP; });
+      countryData.shift();
+      console.log(countryData);
+
+      var taxExtent = d3.extent(countryData, function (d) { return d.Tax; });
+      var taxScale = d3.scaleLog()
+        .domain(taxExtent)
+        .range([0, height]);
+
+      var gdpExtent = d3.extent(countryData, function (d) { return d.GDP; });
+      var gdpScale = d3.scaleLog()
+        .domain(gdpExtent)
+        .range([width, 0]);
+
+      var lowIncomeExtent = d3.extent(countryData, function (d) { return d.LowerIncome; });
+      var lowIncomeScale = d3.scaleLog()
+        .domain(lowIncomeExtent)
+        .range([0, height]);
+
+      countryData.forEach(function (country) {
+        svg.append("circle")
+          .attr("cx", gdpScale(country.GDP))
+          .attr("cy", lowIncomeScale(country.LowerIncome))
+          .attr("r", 3)
+          .style("opacity", 0.3)
+          .on("mouseover", function () {
+            svg.select("#CountryName").text(country.Country);
+          });
+      });
+
+
+    });
+
+
+
+  </script>
+
+
+  <pre><code id="display"></code></pre>
+
+
+  <script>
+    document.getElementById("display").innerText = document.getElementById("code").innerText;
+    hljs.initHighlightingOnLoad();
+  </script>
+
+</body>
+
+</html>

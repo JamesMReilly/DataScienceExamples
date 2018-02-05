@@ -30,6 +30,7 @@
 
   <script id="code">
     var superbowl = [{ "Team": "NE", "Plays": 3, "Yards": 9, "Result": "punt" }, { "Team": "ATL", "Plays": 4, "Yards": 32, "Result": "punt" }, { "Team": "NE", "Plays": 9, "Yards": 41, "Result": "punt" }, { "Team": "ATL", "Plays": 5, "Yards": 24, "Result": "punt" }, { "Team": "NE", "Plays": 5, "Yards": 53, "Result": "fumble" }, { "Team": "ATL", "Plays": 5, "Yards": 71, "Result": "td" }, { "Team": "NE", "Plays": 3, "Yards": 8, "Result": "punt" }, { "Team": "ATL", "Plays": 5, "Yards": 62, "Result": "td" }, { "Team": "NE", "Plays": 12, "Yards": 52, "Result": "int" }, { "Team": "NE", "Plays": 11, "Yards": 52, "Result": "fg" }, { "Team": "ATL", "Plays": 3, "Yards": 4, "Result": "punt" }, { "Team": "NE", "Plays": 3, "Yards": -2, "Result": "punt" }, { "Team": "ATL", "Plays": 8, "Yards": 85, "Result": "td" }, { "Team": "NE", "Plays": 13, "Yards": 75, "Result": "td" }, { "Team": "ATL", "Plays": 3, "Yards": -15, "Result": "punt" }, { "Team": "NE", "Plays": 12, "Yards": 72, "Result": "fg" }, { "Team": "ATL", "Plays": 3, "Yards": -2, "Result": "fumble" }, { "Team": "NE", "Plays": 5, "Yards": 25, "Result": "td" }, { "Team": "ATL", "Plays": 6, "Yards": 45, "Result": "punt" }, { "Team": "NE", "Plays": 10, "Yards": 91, "Result": "td" }, { "Team": "ATL", "Plays": 4, "Yards": 16, "Result": "punt" }, { "Team": "NE", "Plays": 1, "Yards": 13, "Result": "end" }, { "Team": "NE", "Plays": 8, "Yards": 75, "Result": "td" }];
+    var teams = [{ "Team": "NE", "color": "blue" }, { "Team": "ATL", "color": "red" }];
 
     //scale the yards gained on a drive to the svg width
     var eachDriveYards = [];
@@ -54,7 +55,6 @@
       .attr("cx", function (d) { return yardsScale(d.Yards); })
       .attr("cy", function (d) { return 100 })
       .attr("r", 5)
-      .attr("data-legend", function (d) { return d.Team })
       .style("fill", function (d) { return teamScale(d.Team); });
 
     var labels = svg.selectAll("text")
@@ -88,6 +88,22 @@
       .style("font-size", "1.8em")
       .text("Each Drive in Super Bow LI ordered by total yards and categorized by team");
 
+      /* work in progress
+    var legend = svg.append("svg")
+      .attr("width", 100)
+      .attr("height", 20)
+      .attr("x", 10)
+      .attr("y", 10)
+      //.attr("transform", "translate(" + (width / 10) + "," + (height / 10) + ")")
+      .style("border", "#000 1px");
+
+    var legendEntry = legend.selectAll("text")
+      .data(teams)
+      .enter()
+      .append("text")
+      .text(function (d) { return d.Team; });
+
+      */
   </script>
 
 

@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Alegreya Sans', Calibri, sans-serif;
+    }
+
+    svg {
+      border: solid #ccc 1px;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <svg height="600" width="900"> </svg>
+
+  <script id="code">
+
+
+  </script>
+
+
+  <pre><code id="display"></code></pre>
+
+
+  <script>
+    document.getElementById("display").innerText = document.getElementById("code").innerText;
+    hljs.initHighlightingOnLoad();
+  </script>
+
+</body>
+
+</html>
