@@ -70,6 +70,7 @@
       .attr("font-size", "11px")
       .attr("fill", "black");
 
+    // axis
     var axis = d3.axisBottom(yardsScale);
     svg.append("g")
       .attr("transform", "translate(0," + (height / 2) + ")")
@@ -88,22 +89,6 @@
       .style("font-size", "1.8em")
       .text("Each Drive in Super Bow LI ordered by total yards and categorized by team");
 
-      /* work in progress
-    var legend = svg.append("svg")
-      .attr("width", 100)
-      .attr("height", 20)
-      .attr("x", 10)
-      .attr("y", 10)
-      //.attr("transform", "translate(" + (width / 10) + "," + (height / 10) + ")")
-      .style("border", "#000 1px");
-
-    var legendEntry = legend.selectAll("text")
-      .data(teams)
-      .enter()
-      .append("text")
-      .text(function (d) { return d.Team; });
-
-      */
   </script>
 
 

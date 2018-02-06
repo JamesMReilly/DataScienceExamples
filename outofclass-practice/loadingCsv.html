@@ -35,7 +35,7 @@
       return {
         Country: line["Country Name"],
         Variable: line["Series Name"],
-        value: Number(line["2016 [YR2016]"])
+        value: Number(line["2010 [YR2010]"])
       };
     }
 
@@ -50,36 +50,47 @@
         var result = { Country: country.key };
         country.values.forEach(function (d) {
           if (d.Variable == "GDP (current US$)") { result.GDP = d.value; }
-          else if (d.Variable == "Tax revenue (% of GDP)") { result.Tax = d.value; }
-          else if (d.Variable == "Income share held by lowest 20%") { result.LowerIncome = d.value; }
+          else if (d.Variable == "Population, total") { result.Population = d.value; }
+          // else if (d.Variable == "Energy use (kg of oil equivalent per capita)") { result.EnergyPerCapita = d.value; }
         });
 
         return result;
       });
 
-      countryData = countryData.filter(function (d) { return d.LowerIncome && d.GDP; });
+      countryData = countryData.filter(function (d) { return d.Population && d.GDP });
       countryData.shift();
       console.log(countryData);
 
-      var taxExtent = d3.extent(countryData, function (d) { return d.Tax; });
-      var taxScale = d3.scaleLog()
-        .domain(taxExtent)
-        .range([0, height]);
+      var xPadding = 80;
+      var yPadding = 80;
+
+      var popExtent = d3.extent(countryData, function (d) { return d.Population; });
+      var popScale = d3.scaleLog()
+        .domain(popExtent)
+        .nice()
+        .range([xPadding, width - xPadding]);
 
       var gdpExtent = d3.extent(countryData, function (d) { return d.GDP; });
       var gdpScale = d3.scaleLog()
         .domain(gdpExtent)
-        .range([width, 0]);
+        .range([height - yPadding, yPadding]);
 
-      var lowIncomeExtent = d3.extent(countryData, function (d) { return d.LowerIncome; });
-      var lowIncomeScale = d3.scaleLog()
-        .domain(lowIncomeExtent)
-        .range([0, height]);
+      var bottomAxis = d3.axisBottom(popScale)
+      svg.append("g")
+        .attr("transform", "translate(0," + (height - xPadding) + ")")
+        .attr("class", "xaxis")
+        .call(bottomAxis);
+
+      var leftAxis = d3.axisLeft(gdpScale);
+      svg.append("g")
+        .attr("class", "yaxis")
+        .attr("transform", "translate(" + yPadding + ", 0)")
+        .call(leftAxis);
 
       countryData.forEach(function (country) {
         svg.append("circle")
-          .attr("cx", gdpScale(country.GDP))
-          .attr("cy", lowIncomeScale(country.LowerIncome))
+          .attr("cx", popScale(country.Population))
+          .attr("cy", gdpScale(country.GDP))
           .attr("r", 3)
           .style("opacity", 0.3)
           .on("mouseover", function () {
@@ -87,6 +98,13 @@
           });
       });
 
+      svg.append("text")
+        .attr("transform", "translate(" + (width / 2.3) + "," + (height - (xPadding / 2)) + ")")
+        .text("Population (Millions)");
+
+      svg.append("text")
+        .attr("transform", "translate(" + yPadding / 3 + "," + (height / 1.7) + ")rotate(270)")
+        .text("GDP (Billions $)");
 
     });
 
