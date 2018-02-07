@@ -30,6 +30,7 @@
     // Define variables outside the scope of the callback function.
     var countryData;
     var rawData, nestedData;
+
     // This function will be applied to all rows. Select three columns, change names, and convert strings to numbers.
     function parseLine(line) {
       return {
@@ -46,24 +47,30 @@
         .key(function (d) { return d.Country; })
         .entries(data);
 
+      //extract only the data of interest
       countryData = nestedData.map(function (country) {
         var result = { Country: country.key };
         country.values.forEach(function (d) {
           if (d.Variable == "GDP (current US$)") { result.GDP = d.value; }
           else if (d.Variable == "Population, total") { result.Population = d.value; }
-          // else if (d.Variable == "Energy use (kg of oil equivalent per capita)") { result.EnergyPerCapita = d.value; }
         });
 
         return result;
       });
+      //remove bad data, where population is greater than 2 trillion, or GDP greater than USA by 2 trillion
+      countryData = countryData.filter(function (d) { return (d.Population < 2000) && (d.GDP < 20000) })
 
+      //remove countries where in there is not a population AND gdp value
       countryData = countryData.filter(function (d) { return d.Population && d.GDP });
-      countryData.shift();
+      //also remove the "other" values from start of array that are not countriess
+      countryData = countryData.slice(17, countryData.length - 1);
       console.log(countryData);
 
+      //paddings for minimized size of graph to fit labels/title
       var xPadding = 80;
       var yPadding = 80;
 
+      //scales for population and gdp based on the extent of data
       var popExtent = d3.extent(countryData, function (d) { return d.Population; });
       var popScale = d3.scaleLog()
         .domain(popExtent)
@@ -98,25 +105,31 @@
           });
       });
 
+      //title
+      svg.append("text")
+        .attr("transform", "translate(" + (width / 2.3) + "," + xPadding + ")")
+        .text("Population vs. GDP")
+        .style("font-size", "150%")
+
+      //x-axis label, transformation based on trial/error
       svg.append("text")
         .attr("transform", "translate(" + (width / 2.3) + "," + (height - (xPadding / 2)) + ")")
         .text("Population (Millions)");
 
+      //y-axis label, rotated to be vertical text and translated via trial/error
       svg.append("text")
         .attr("transform", "translate(" + yPadding / 3 + "," + (height / 1.7) + ")rotate(270)")
         .text("GDP (Billions $)");
 
     });
 
-
-
   </script>
 
 
   <pre><code id="display"></code></pre>
 
-
   <script>
+    //print the code below the chart with syntax highlighting
     document.getElementById("display").innerText = document.getElementById("code").innerText;
     hljs.initHighlightingOnLoad();
   </script>
