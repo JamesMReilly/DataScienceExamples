@@ -53,6 +53,7 @@
         country.values.forEach(function (d) {
           if (d.Variable == "GDP (current US$)") { result.GDP = d.value; }
           else if (d.Variable == "Population, total") { result.Population = d.value; }
+          else if (d.Variable == "Surface area (sq. km)") { result.SurfaceArea = d.value; }
         });
 
         return result;
@@ -61,7 +62,7 @@
       countryData = countryData.filter(function (d) { return (d.Population < 2000) && (d.GDP < 20000) })
 
       //remove countries where in there is not a population AND gdp value
-      countryData = countryData.filter(function (d) { return d.Population && d.GDP });
+      countryData = countryData.filter(function (d) { return d.Population && d.GDP && d.SurfaceArea });
       //also remove the "other" values from start of array that are not countriess
       countryData = countryData.slice(17, countryData.length - 1);
       console.log(countryData);
@@ -70,7 +71,7 @@
       var xPadding = 80;
       var yPadding = 80;
 
-      //scales for population and gdp based on the extent of data
+      //scales based on the extent of data
       var popExtent = d3.extent(countryData, function (d) { return d.Population; });
       var popScale = d3.scaleLog()
         .domain(popExtent)
@@ -81,6 +82,11 @@
       var gdpScale = d3.scaleLog()
         .domain(gdpExtent)
         .range([height - yPadding, yPadding]);
+
+      var areaExtent = d3.extent(countryData, function (d) { return d.SurfaceArea; });
+      var areaScale = d3.scaleLog()
+        .domain(areaExtent)
+        .range([3, 20]);
 
       var bottomAxis = d3.axisBottom(popScale)
       svg.append("g")
@@ -98,7 +104,7 @@
         svg.append("circle")
           .attr("cx", popScale(country.Population))
           .attr("cy", gdpScale(country.GDP))
-          .attr("r", 3)
+          .attr("r", areaScale(country.SurfaceArea))
           .style("opacity", 0.3)
           .on("mouseover", function () {
             svg.select("#CountryName").text(country.Country);
