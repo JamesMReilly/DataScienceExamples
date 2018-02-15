@@ -1,0 +1,105 @@
+<html>
+
+<head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Alegreya Sans', Calibri, sans-serif;
+    }
+
+    svg {
+      border: solid #ccc 1px;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <svg height="600" width="900"> </svg>
+
+  <script id="code">
+    var svg = d3.select("svg");
+
+    var width = svg.attr("width");
+    var height = svg.attr("height");
+
+    // Define variables outside the scope of the callback function.
+    var rawData;
+
+    d3.csv("/data/LineData.csv")
+      .row(function (d) { return { year: d.year, month: d.month, value: d.value }; })
+      .get(function (error, rawData) {
+        console.log(rawData);
+
+        transformedData = rawData.map(function (d) {
+          var result = {
+            date: new Date(d.year, d.month),
+            value: d.value
+          }
+          return result;
+        })
+
+        console.log(transformedData);
+      });
+
+    /*
+    d3.csv("/data/WiscEmployment.csv", parseLine, function (error, data) {
+      rawData = data;
+
+      nestedData = d3.nest()
+        .key(function (d) { return d.ID; })
+        .entries(data);
+
+      //extract only the data of interest
+      employmentData = nestedData.map(function (series) {
+        var result = {
+          ID: series.id,
+          Year: series.id,
+          Month: series.id
+        };
+        return result;
+      });
+
+      console.log(employmentData);
+
+      //paddings for minimized size of graph to fit labels/title
+      var xPadding = 80;
+      var yPadding = 80;
+
+
+      //title
+      svg.append("text")
+        .attr("transform", "translate(" + (width / 2.3) + "," + xPadding + ")")
+        .text("Population vs. GDP")
+        .style("font-size", "150%")
+
+      //x-axis label, transformation based on trial/error
+      svg.append("text")
+        .attr("transform", "translate(" + (width / 2.3) + "," + (height - (xPadding / 2)) + ")")
+        .text("Population (Millions)");
+
+      //y-axis label, rotated to be vertical text and translated via trial/error
+      svg.append("text")
+        .attr("transform", "translate(" + yPadding / 3 + "," + (height / 1.7) + ")rotate(270)")
+        .text("GDP (Billions $)");
+
+    }); */
+
+  </script>
+
+
+  <pre><code id="display"></code></pre>
+
+  <script>
+    //print the code below the chart with syntax highlighting
+    document.getElementById("display").innerText = document.getElementById("code").innerText;
+    hljs.initHighlightingOnLoad();
+  </script>
+
+</body>
+
+</html>
